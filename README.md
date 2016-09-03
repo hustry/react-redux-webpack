@@ -1,5 +1,5 @@
 
-### Webpack + React
+### React + redux + webpack
 
 ## 使用
 ```js
@@ -14,14 +14,8 @@ webpack-dev-server --content-base build --inline --hot
 npm run dev
 ```
 
-## loaders
-使用了如下一些loader
-* babel-loader<br/>
-	babel-loader需要babel-core,babel-preset-es2015使用react还需要babel-react
-* css-loader<br/>
-	可以require("*.css")
-* style-loader<br/>
-	添加style标签到html
-* url-loader<br/>
-	可以require(文件路径)
-* file-loader
+##关于redux
+redux有三大principal
+*只有一个store,里面保存在整个应用程序的state对象
+*state是只读的，仅仅可以通过emit一个action来更改state
+*如何更改由reducer定义

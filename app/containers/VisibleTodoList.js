@@ -7,7 +7,7 @@ import TodoList from "../components/TodoList"
 const mapStateToProps = function(state){
 
 	let filteredTodos = null;
-	let todos = state.todos;
+	let todos = state.todos.present;
 
 	switch(state.visibilityFilter){
 

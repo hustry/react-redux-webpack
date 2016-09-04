@@ -3,6 +3,7 @@ import React from 'react'
 import AddTodo from "../containers/AddTodo"
 import VisibleTodoList from "../containers/VisibleTodoList"
 import FilterLink from "../containers/FilterLink"
+import UndoRedo from "../containers/UndoRedo"
 
 
 export default class App extends React.Component{
@@ -12,6 +13,7 @@ export default class App extends React.Component{
 					<AddTodo />
 					<VisibleTodoList />
 					<FilterLink />
+					<UndoRedo />
 				</div>);
 	}
 }

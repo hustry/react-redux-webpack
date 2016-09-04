@@ -1,25 +1,24 @@
 
-let nextTodoId = 0;
 
-
-export const addTodo = function(text){
+export const receiveProducts = function(){
 	return {
-		type:'ADD_TODO',
-		id:nextTodoId++,
-		text:text
+		type:'RECEIVE_PRODUCTS'
 	}
 }
 
-export const toggleTodo = function(id){
-	return {
-		type:'TOGGLE_TODO',
-		id:id
+
+
+export const addToCart = function(productId){
+	return (dispath,getState)=>{
+		if(getState().products.byId[productId].inventory>0){
+			dispath(addToCartUnsafe(productId));
+		}
 	}
 }
 
-export const setFilter = function(filter){
+const addToCartUnsafe = function(productId){
 	return {
-		type:'SET_VISIBILITY_FILTER',
-		filter:filter
+		type:'ADD_TO_CART',
+		productId:productId
 	}
 }

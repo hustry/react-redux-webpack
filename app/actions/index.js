@@ -1,24 +1,38 @@
 
-
-export const receiveProducts = function(){
+export function increment(nodeId){
 	return {
-		type:'RECEIVE_PRODUCTS'
+		type:'INCREMENT',
+		nodeId
 	}
 }
 
-
-
-export const addToCart = function(productId){
-	return (dispath,getState)=>{
-		if(getState().products.byId[productId].inventory>0){
-			dispath(addToCartUnsafe(productId));
-		}
+let nextId = 0;
+export function createNode(){
+	return {
+		type:"CREATE_NODE",
+		nodeId:`new_${nextId++}`
 	}
 }
 
-const addToCartUnsafe = function(productId){
+export function deleteNode(nodeId){
 	return {
-		type:'ADD_TO_CART',
-		productId:productId
+		type:'DELETE_NODE',
+		nodeId
+	}
+}
+
+export function addChild(nodeId,childId){
+	return {
+		type:"ADD_CHILD",
+		nodeId,
+		childId
+	}
+}
+
+export function removeChild(nodeId,childId){
+	return {
+		type:'REMOVE_CHILD',
+		nodeId,
+		childId
 	}
 }

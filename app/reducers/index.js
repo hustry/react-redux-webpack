@@ -1,53 +1,56 @@
 
+import { combineReducers } from "redux";
 
-export default function(state={},action){
-	const {nodeId} = action;
-
-	if(action.type == "DELETE_NODE"){
-		const descendantIds = getAllDescendantIds(state,nodeId);
-		return deleteMany(state,[nodeId,...descendantIds]);
-	}
-
-	return Object.assign({},state,{[nodeId]:node(state[nodeId],action)});
-}
-
-function getAllDescendantIds(state,nodeId){
-	return state[nodeId].childIds.reduce((acc,childId)=>(
-			[...acc,childId,...getAllDescendantIds(state,childId)]
-		),[])
-}
-
-function deleteMany(state,ids){
-	state = Object.assign({},state);
-	ids.forEach(id=>delete state[id]);
-	return state
-}
-
-function node(state,action){
+function selectedReddit(state='reactjs',action){
 	switch(action.type){
-		case 'CREATE_NODE':
-			return {
-				id:action.nodeId,
-				counter:0,
-				childIds:[]
-			}
-		case 'INCREMENT':
-			return Object.assign({},state,{counter:state.counter+1});
-		case 'ADD_CHILD':
-		case 'REMOVE_CHILD':
-			return Object.assign({},state,{childIds:childIds(state.childIds,action)});
+		case "SELECT_REDDIT":
+			return action.reddit;
 		default:
 			return state;
 	}
 }
 
-function childIds(state,action){
+function posts(state={
+	isFetching:false,
+	didInvidate:false,
+	items:[]
+},action){
+
 	switch(action.type){
-		case 'ADD_CHILD':
-			return [...state, action.childId];
-		case 'REMOVE_CHILD':
-			return state.filter((id)=>(id!==action.childId));
+		case "INVALIDATE_REDDIT":
+			return Object.assign({},state,{didInvidate:true});
+		case "REQUEST_POSTS":
+			return Object.assign({},state,{isFetching:true,didInvidate:false})
+		case "RECEIVE_POSTS":
+			return Object.assign({},state,
+									{
+										isFetching:false,
+										didInvidate:false,
+										items:action.posts,
+										lastUpdated:action.receivedAt
+									});
 		default:
 			return state;
 	}
+
 }
+
+function postsByReddit(state={},action){
+	switch(action.type){
+		case "INVALIDATE_REDDIT":
+		case "RECEIVE_POSTS":
+		case "REQUEST_POSTS":
+			return Object.assign({},
+					state,
+					{[action.reddit]:posts(state[action.reddit],action)})
+		default:
+			return state;
+		}		
+}
+
+const rootReducer = combineReducers({
+	postsByReddit,
+	selectedReddit
+});
+
+export default rootReducer;

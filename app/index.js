@@ -1,19 +1,24 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import createLogger from "redux-logger"
-import Node from "./containers/Node"
+import thunk from "redux-thunk"
 import reducer from "./reducers"
-import generateTree from "./generateTree"
+import App from "./containers/App"
 
-const tree = generateTree();
+const middleware = [thunk];
 
-const store = createStore(reducer,tree);
+if(process.env.NODE_ENV!=='production'){
+	middleware.push(createLogger());
+}
+
+
+const store = createStore(reducer,applyMiddleware(...middleware));
 
 ReactDOM.render(
 	<Provider store={store}>
-		<Node id={0} />
+		<App />
 	</Provider>,
 	document.getElementById('content'));
